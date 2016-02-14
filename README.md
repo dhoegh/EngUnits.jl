@@ -29,14 +29,14 @@ julia> display_unit(u"kN*m", "kN m")
 julia> b = 1u"kN*m"
 1.0 kN m
 
-julia> Int(a) == Int(b)
+julia> unitless(a) == unitless(b)
 true
 ```
 Even though the display unit is kN m the calculations is performed using the siunit and the value of a and b are therefore the same. the only difference is how the value is displayed to the user.
 
 # Known issues/limitations
 * `u"in"` do not give inches use `u"inch"` instead. This is caused by `in` is a infix operator in julia and because the unit string macro use julia's parser to parse the unit strings `in` cannot be used to mean inches.
-* Not all methods can take units. If a method do not take unitfull arguments then a unit can be converted to a unitless value by calling `Float64` or `Int` on the variable.
+* Not all methods can take units. If a method do not take unitfull arguments then a unit can be converted to a unitless value by calling `unitless` on the variable.
 
 Don't hesitate to file an issue or pull-request to improve the package.
 

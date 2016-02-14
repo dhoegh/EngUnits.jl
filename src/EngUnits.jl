@@ -25,7 +25,9 @@ module EngUnits
     import .Imperial
     imp = Imperial
 
-    prefixes = Dict("k" => Kilo,
+    prefixes = Dict("da" => (10)SIPrefix,
+                    "h" => (100)SIPrefix,
+                    "k" => Kilo,
                     "M" => Mega,
                     "G" => Giga,
                     "T" => Tera,
@@ -189,12 +191,19 @@ module EngUnits
 			un = replace(s, p, "", 1)
 			u_i = Base.ht_keyindex(prefix_units, un)
 			p_i = Base.ht_keyindex(prefixes, "$p")
-			if !(u_i<0) && !(p_i<0)
+			if u_i>0 && p_i>0
 				return prefixes.vals[p_i]*prefix_units.vals[u_i]
 			end
+            # special case da as it is the only two letter prefix
+            if s.data[1:2] == [0x64, 0x61] # da
+                u_i = Base.ht_keyindex(prefix_units, UTF8String(s.data[3:end]))
+                if u_i>0
+                    return prefixes["da"] * prefix_units.vals[u_i]
+                end
+            end
 		end
 		u_i = Base.ht_keyindex(prefix_units, s)
-		if !(u_i<0)
+		if u_i>0
 			 return prefix_units.vals[u_i]
 		end
 		u_i = Base.ht_keyindex(misc_units, s)
@@ -262,7 +271,9 @@ module EngUnits
         rm(default_units_file)
         include(joinpath(dirname(@__FILE__), "..", "deps", "build.jl"))
     end
+    
+    unitless{T<:Number,m,kg,s,A,K,mol,cd,rad,sr}(u::SI.SIQuantity{T,m,kg,s,A,K,mol,cd,rad,sr}) = u.val
 
-    export display_unit, @u_str, g, default_units, reset_default_units
+    export display_unit, @u_str, g, default_units, reset_default_units, unitless
 end
 
