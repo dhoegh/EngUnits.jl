@@ -10,7 +10,7 @@ julia> b = 4 * u"inch"
 0.1016 m
 julia> sqrt(a^2 + b^2)==5u"inch"
 ```
-All units inputted with the unit string `u""`, will be converted to the SI unit equvilant, hence one inch is converted to `0.00254 m`. SI prefixes and operators can also be used in a unit string as:
+All units inputted with the unit string `u""`, will be converted to the SI unit equivalent, hence one inch is converted to `0.00254 m`. SI prefixes and operators can also be used in a unit string as:
 ```
 julia> 1.0u"N/mm^2"
 1.0e6 Pa
@@ -32,7 +32,7 @@ julia> b = 1u"kN*m"
 julia> unitless(a) == unitless(b)
 true
 ```
-Even though the display unit is kN m the calculations is performed using the siunit and the value of a and b are therefore the same. the only difference is how the value is displayed to the user.
+Even though the display unit is kN m the calculations is performed using the SI unit and the value of a and b are therefore the same. the only difference is how the value is displayed to the user.
 
 # Known issues/limitations
 * `u"in"` do not give inches use `u"inch"` instead. This is caused by `in` is a infix operator in julia and because the unit string macro use julia's parser to parse the unit strings `in` cannot be used to mean inches.
